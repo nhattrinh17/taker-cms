@@ -6,6 +6,7 @@
   --background: #ffffff;
   --foreground: #171717;
   --primaryColor: #16a84e;
+  --backgroundModal: #000000d9;
 }
 
 @media (prefers-color-scheme: dark) {

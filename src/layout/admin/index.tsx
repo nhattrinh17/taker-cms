@@ -2,11 +2,12 @@
 
 import { useAppDispatch, useAppSelector } from '@/lib';
 import { handleLogout } from '@/utils/handleLogin';
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function AdminLayout({
   children,
@@ -15,13 +16,16 @@ export function AdminLayout({
 }>): JSX.Element {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { userId } = useAppSelector((state) => state.userCurrent);
+  const { userId, userName } = useAppSelector((state) => state.userCurrent);
+  const [openUserInfo, setOpenUserInfo] = useState(false);
 
   useEffect(() => {
     if (!userId) {
       router.replace('/');
     }
   }, []);
+
+  const openOrCloseUserInfo = () => setOpenUserInfo((pre) => !pre);
 
   return (
     <>
@@ -35,7 +39,7 @@ export function AdminLayout({
               <FontAwesomeIcon icon={faCaretDown} className="w-2 text-[#303030]" />
             </div>
             <div className="hidden group-hover:block absolute top-full right-0 shadow-md py-3 bg-white w-[200px]">
-              <div className="flex items-center gap-2 py-1 px-2 cursor-pointer hover:bg-[#99999961]">
+              <div onClick={openOrCloseUserInfo} className="flex items-center gap-2 py-1 px-2 cursor-pointer hover:bg-[#99999961]">
                 <span className="text-[#303030]">Thông tin tài khoản</span>
               </div>
               <div className="flex items-center gap-2 py-1 px-2 cursor-pointer hover:bg-[#99999961]">
@@ -50,7 +54,44 @@ export function AdminLayout({
 
         <div></div>
       </header>
-      <main className="container py-6">{children}</main>
+      <main className="container py-6">
+        <div
+          onClick={openOrCloseUserInfo}
+          className={classNames('fixed top-0 left-0 right-0 bottom-0 bg-[var(--backgroundModal)] items-center justify-center', {
+            flex: openUserInfo,
+            hidden: !openUserInfo,
+          })}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-white px-6 py-9 w-fit min-w-[500px] max-w-full rounded-2xl">
+            <div className="border-b relative pb-2">
+              <h3 className="font-semibold text-lg">Thông tin tài khoản</h3>
+              <FontAwesomeIcon onClick={openOrCloseUserInfo} icon={faXmark} className="absolute cursor-pointer top-0 right-0 text-lg" />
+            </div>
+
+            <div className="pt-5">
+              <div className="flex gap-4 py-2">
+                <div className="font-semibold text-base text-[#303030]">Tên tài khoản:</div>
+                <span className="text-base font-semibold">{userName}</span>
+              </div>
+
+              <div className="flex gap-4 py-2">
+                <div className="font-semibold text-base text-[#303030]">Họ và tên:</div>
+                <span className="text-base font-semibold">{userName}</span>
+              </div>
+
+              <div className="flex gap-4 py-2">
+                <div className="font-semibold text-base text-[#303030]">Tên trường:</div>
+                <span className="text-base font-semibold">{userName}</span>
+              </div>
+
+              <div className="flex gap-4 py-2">
+                <div className="font-semibold text-base text-[#303030]">Địa chỉ:</div>
+                <span className="text-base font-semibold">{userName}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {children}
+      </main>
     </>
   );
 }
