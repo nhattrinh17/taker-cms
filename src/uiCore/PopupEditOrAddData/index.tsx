@@ -1,366 +1,366 @@
-// 'use client';
+'use client';
 
-// import classNames from 'classnames/bind';
-// import styles from './styles.module.scss';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faXmark } from '@fortawesome/free-solid-svg-icons';
-// import { ChangeEvent, useRef, useState } from 'react';
-// import { useAppDispatch } from '@/lib';
-// import Image from 'next/image';
+import classNames from 'classnames/bind';
+import styles from './styles.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { ChangeEvent, useRef, useState } from 'react';
+import { useAppDispatch } from '@/lib';
+import Image from 'next/image';
 
-// import 'froala-editor/css/froala_editor.pkgd.min.css';
-// import 'froala-editor/css/froala_style.min.css';
-// import 'froala-editor/css/themes/dark.min.css';
-// import 'froala-editor/css/froala_editor.pkgd.min.css';
-// import dynamic from 'next/dynamic';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import 'froala-editor/css/froala_style.min.css';
+import 'froala-editor/css/themes/dark.min.css';
+import 'froala-editor/css/froala_editor.pkgd.min.css';
+import dynamic from 'next/dynamic';
 
-// // import FroalaEditorComponent from 'react-froala-wysiwyg';
+// import FroalaEditorComponent from 'react-froala-wysiwyg';
 
-// const FroalaEditorComponent = dynamic(
-//   async () => {
-//     const values = await Promise.all([
-//       import('react-froala-wysiwyg'), // must be first import since we are doing values[0] in return
-//       import('froala-editor/js/plugins.pkgd.min.js'),
-//     ]);
-//     return values[0];
-//   },
-//   {
-//     loading: () => <p>LOADING!!!</p>,
-//     ssr: false,
-//   },
-// );
+const FroalaEditorComponent = dynamic(
+  async () => {
+    const values = await Promise.all([
+      import('react-froala-wysiwyg'), // must be first import since we are doing values[0] in return
+      import('froala-editor/js/plugins.pkgd.min.js'),
+    ]);
+    return values[0];
+  },
+  {
+    loading: () => <p>LOADING!!!</p>,
+    ssr: false,
+  },
+);
 
-// const cx = classNames.bind(styles);
+const cx = classNames.bind(styles);
 
-// export interface ItemAddOrUpdateDto {
-//   name: string;
-//   label: string;
-//   type: string;
-//   value: string | number;
-//   readOnly: boolean;
-//   required?: boolean;
-//   placeholder?: string;
-//   dataOption?: {
-//     text?: string;
-//     value?: string | number;
-//   }[];
-//   canUpdate?: boolean;
-// }
+export interface ItemAddOrUpdateDto {
+  name: string;
+  label: string;
+  type: string;
+  value: string | number;
+  readOnly: boolean;
+  required?: boolean;
+  placeholder?: string;
+  dataOption?: {
+    text?: string;
+    value?: string | number;
+  }[];
+  canUpdate?: boolean;
+}
 
-// export interface DataEditDto {
-//   data: ItemAddOrUpdateDto[];
-//   onCancel: () => void;
-//   maxWidth?: number | string;
-//   minWidth?: number | string;
-//   id?: number;
-//   title?: string;
-//   textWarning?: string;
-//   onSubmit?: (id: number, data: any, dispatch: any) => void;
-//   onSubmitCreate?: (data: any, dispatch: any) => void;
-//   handleUpLoadFiles?: (file: FileList) => Promise<string[]>;
-//   position?: any;
-// }
+export interface DataEditDto {
+  data: ItemAddOrUpdateDto[];
+  onCancel: () => void;
+  maxWidth?: number | string;
+  minWidth?: number | string;
+  id?: number;
+  title?: string;
+  textWarning?: string;
+  onSubmit?: (id: number, data: any, dispatch: any) => void;
+  onSubmitCreate?: (data: any, dispatch: any) => void;
+  handleUpLoadFiles?: (file: FileList) => Promise<string[]>;
+  position?: any;
+}
 
-// export function PopupEditOrAddV1({
-//   //
-//   id,
-//   data,
-//   minWidth,
-//   maxWidth,
-//   onCancel,
-//   onSubmit,
-//   title,
-//   textWarning,
-//   handleUpLoadFiles,
-//   onSubmitCreate,
-//   position = 'absolute',
-// }: DataEditDto) {
-//   const [dataState, setDataState] = useState(data);
-//   // console.log('🚀 ~ dataState:', dataState);
-//   const isUnableBtn = dataState.some((item) => item.canUpdate);
-//   const [editorContents, setEditorContents] = useState<{ [key: string]: string }>(
-//     data.reduce((acc, item) => {
-//       if (item.type === 'editor') {
-//         acc[item.name] = item.value as string;
-//       }
-//       return acc;
-//     }, {} as { [key: string]: string }),
-//   );
+export function PopupEditOrAddV1({
+  //
+  id,
+  data,
+  minWidth,
+  maxWidth,
+  onCancel,
+  onSubmit,
+  title,
+  textWarning,
+  handleUpLoadFiles,
+  onSubmitCreate,
+  position = 'absolute',
+}: DataEditDto) {
+  const [dataState, setDataState] = useState(data);
+  // console.log('🚀 ~ dataState:', dataState);
+  const isUnableBtn = dataState.some((item) => item.canUpdate);
+  const [editorContents, setEditorContents] = useState<{ [key: string]: string }>(
+    data.reduce((acc, item) => {
+      if (item.type === 'editor') {
+        acc[item.name] = item.value as string;
+      }
+      return acc;
+    }, {} as { [key: string]: string }),
+  );
 
-//   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-//   const handleOnChangeInputOrSelect = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, col: ItemAddOrUpdateDto) => {
-//     //   const element = e.target as HTMLOptionElement;
-//     setDataState((pre) => {
-//       const dataNew = pre.map((item) => {
-//         if (item.name === col.name) {
-//           if (col.type == 'checkbox') {
-//             const elementCheckbox: any = e.target;
-//             return {
-//               ...item,
-//               value: elementCheckbox.checked,
-//             };
-//           }
-//           return {
-//             ...item,
-//             value: e.target.value,
-//           };
-//         } else {
-//           return item;
-//         }
-//       });
-//       return dataNew;
-//     });
-//   };
+  const handleOnChangeInputOrSelect = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>, col: ItemAddOrUpdateDto) => {
+    //   const element = e.target as HTMLOptionElement;
+    setDataState((pre) => {
+      const dataNew = pre.map((item) => {
+        if (item.name === col.name) {
+          if (col.type == 'checkbox') {
+            const elementCheckbox: any = e.target;
+            return {
+              ...item,
+              value: elementCheckbox.checked,
+            };
+          }
+          return {
+            ...item,
+            value: e.target.value,
+          };
+        } else {
+          return item;
+        }
+      });
+      return dataNew;
+    });
+  };
 
-//   const handleChangeFile = (urlImage: string[], col: ItemAddOrUpdateDto, deleteImage = false) => {
-//     setDataState((pre) => {
-//       const dataNew = pre.map((item) => {
-//         if (item.name === col.name) {
-//           let newImages = item.value ? item.value.toString().split('*_*') : [];
-//           // console.log('🚀 ~ dataNew ~ newImages:', item.value, newImages);
-//           if (!deleteImage) {
-//             newImages.push(...urlImage);
-//           } else {
-//             newImages = [...newImages].filter((item) => !urlImage.includes(item));
-//           }
-//           // console.log('🚀 ~ dataNew ~ newImages:', newImages);
-//           return {
-//             ...item,
-//             value: newImages.join('*_*'),
-//           };
-//         } else {
-//           return item;
-//         }
-//       });
-//       return dataNew;
-//     });
-//   };
+  const handleChangeFile = (urlImage: string[], col: ItemAddOrUpdateDto, deleteImage = false) => {
+    setDataState((pre) => {
+      const dataNew = pre.map((item) => {
+        if (item.name === col.name) {
+          let newImages = item.value ? item.value.toString().split('*_*') : [];
+          // console.log('🚀 ~ dataNew ~ newImages:', item.value, newImages);
+          if (!deleteImage) {
+            newImages.push(...urlImage);
+          } else {
+            newImages = [...newImages].filter((item) => !urlImage.includes(item));
+          }
+          // console.log('🚀 ~ dataNew ~ newImages:', newImages);
+          return {
+            ...item,
+            value: newImages.join('*_*'),
+          };
+        } else {
+          return item;
+        }
+      });
+      return dataNew;
+    });
+  };
 
-//   // Editor Froala
-//   const handleImageUpload = (files: File[], insertImage: (url: string) => void) => {
-//     if (handleUpLoadFiles) {
-//       handleUpLoadFiles(files as unknown as FileList)
-//         .then((urls) => {
-//           urls.forEach((url) => {
-//             insertImage(url);
-//           });
-//         })
-//         .catch((error) => {
-//           console.error('Image upload error:', error);
-//         });
-//     }
-//   };
+  // Editor Froala
+  const handleImageUpload = (files: File[], insertImage: (url: string) => void) => {
+    if (handleUpLoadFiles) {
+      handleUpLoadFiles(files as unknown as FileList)
+        .then((urls) => {
+          urls.forEach((url) => {
+            insertImage(url);
+          });
+        })
+        .catch((error) => {
+          console.error('Image upload error:', error);
+        });
+    }
+  };
 
-//   const handleModelChange = (name: string, model: string) => {
-//     setEditorContents((prev) => ({
-//       ...prev,
-//       [name]: model,
-//     }));
-//   };
+  const handleModelChange = (name: string, model: string) => {
+    setEditorContents((prev) => ({
+      ...prev,
+      [name]: model,
+    }));
+  };
 
-//   return (
-//     <div
-//       onClick={onCancel}
-//       className={cx('wrapper')}
-//       style={{
-//         position: position || 'absolute',
-//       }}>
-//       <form
-//         className={cx('wrapper__form', 'shadow-sm')}
-//         style={{
-//           minWidth: minWidth || 400,
-//           maxWidth: maxWidth || 'auto',
-//         }}
-//         onSubmit={(e) => {
-//           e.preventDefault();
-//           const dataSend: any = {};
-//           dataState.forEach((item, index) => {
-//             if (item.canUpdate) {
-//               if (item.type !== 'editor') dataSend[item.name] = item.value;
-//               else dataSend[item.name] = dataSend[item.name] = editorContents[item.name];
-//             }
-//           });
-//           if (id) {
-//             onSubmit && onSubmit(id, dataSend, dispatch);
-//           } else {
-//             onSubmitCreate && onSubmitCreate(dataSend, dispatch);
-//           }
-//           onCancel();
-//         }}>
-//         <div className={cx('group__list')} onClick={(e) => e.stopPropagation()}>
-//           <div className={cx('body__header')}>
-//             <h1 className={cx('body__header--text', 'flex-1 ')}>{title || 'Cập nhật quá trình giao dịch'}</h1>
-//             <FontAwesomeIcon className={cx('body__header--icon')} icon={faXmark} onClick={onCancel} />
-//           </div>
-//           {textWarning && <p className={cx('wrapper__warning', 'text-center text-red-500 mb-1 text-sm')}>{textWarning}</p>}
-//           {dataState.map((col, index) => (
-//             <div key={index} className={cx('group__data')}>
-//               <label className={cx('group__data--label')}>{col.label}</label>
-//               {col.type == 'options' ? (
-//                 <select
-//                   required={col.required}
-//                   className={cx('group__data--select', { 'group__data--input-readOnly': col.readOnly })}
-//                   name={col.name}
-//                   defaultValue={col.value}
-//                   onChange={(e) => {
-//                     handleOnChangeInputOrSelect(e, col);
-//                   }}>
-//                   {col.dataOption?.map((val, index) => (
-//                     <option key={index} className={cx('group__data--option')} value={val.value}>
-//                       {val.text}
-//                     </option>
-//                   ))}
-//                 </select>
-//               ) : col.type == 'images' || col.type == 'image' ? (
-//                 <div className="">
-//                   <input
-//                     type="file"
-//                     name={col.name}
-//                     required={col.required}
-//                     multiple={col.type === 'images'}
-//                     onChange={async (e) => {
-//                       if (e.target.files && handleUpLoadFiles) {
-//                         const urlImage = await handleUpLoadFiles(e.target.files);
-//                         if (urlImage.length) {
-//                           handleChangeFile(urlImage, col);
-//                         }
-//                       }
-//                     }}
-//                   />
-//                   <div className="mt-4 grid grid-cols-3 gap-3">
-//                     {col.value
-//                       .toString()
-//                       .split('*_*')
-//                       .map((img, index) => (
-//                         <div key={index} className="w-full relative">
-//                           <div
-//                             className={cx('absolute top-2 right-2 rounded-full bg-white w-6 h-6 text-center shadow-lg cursor-pointer', {
-//                               hidden: !img,
-//                             })}
-//                             onClick={() => handleChangeFile([img], col, true)}>
-//                             <FontAwesomeIcon icon={faXmark} className=" text-base" />
-//                           </div>
-//                           <Image
-//                             //
-//                             key={index}
-//                             alt="Image demo"
-//                             src={String(img) || '/no-image.jpg'}
-//                             width={350}
-//                             height={250}
-//                             className={cx('image__demo', 'rounded-2xl')}
-//                           />
-//                         </div>
-//                       ))}
-//                   </div>
-//                 </div>
-//               ) : col.type == 'editor' ? (
-//                 <FroalaEditorComponent
-//                   tag="textarea"
-//                   config={{
-//                     placeholderText: 'Edit Your Content Here!',
-//                     charCounterCount: true,
-//                     toolbarButtons: [
-//                       //
-//                       'bold',
-//                       'italic',
-//                       'underline',
-//                       'strikeThrough',
-//                       'subscript',
-//                       'superscript',
-//                       '|',
-//                       'fontFamily',
-//                       'fontSize',
-//                       'color',
-//                       'inlineStyle',
-//                       'paragraphStyle',
-//                       '|',
-//                       'paragraphFormat',
-//                       'align',
-//                       'formatOL',
-//                       'formatUL',
-//                       'outdent',
-//                       'indent',
-//                       'quote',
-//                       '-',
-//                       'insertLink',
-//                       'insertImage',
-//                       // 'insertVideo',
-//                       // 'insertFile',
-//                       'insertTable',
-//                       '|',
-//                       'emoticons',
-//                       'specialCharacters',
-//                       'insertHR',
-//                       'selectAll',
-//                       'clearFormatting',
-//                       '|',
-//                       'print',
-//                       'help',
-//                       'html',
-//                       '|',
-//                       'undo',
-//                       'redo',
-//                     ],
-//                     pluginsEnabled: ['align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
-//                     imageUpload: true,
-//                     imageUploadMethod: 'POST',
-//                     events: {
-//                       'image.beforeUpload': function (files: File[]) {
-//                         const editor = this as any;
-//                         handleImageUpload(files, (url: string) => {
-//                           editor.image.insert(url, true, null, editor.image.get(), null);
-//                         });
-//                         return false; // Stop default upload
-//                       },
-//                     },
-//                   }}
-//                   model={editorContents[col.name]}
-//                   onModelChange={(model: any) => handleModelChange(col.name, model)}
-//                 />
-//               ) : col.type == 'textarea' ? (
-//                 <textarea
-//                   value={col.value ?? ''}
-//                   name={col.name}
-//                   required={col.required}
-//                   readOnly={col.readOnly}
-//                   placeholder={col.placeholder}
-//                   className={cx('group__data--input', 'min-h-[140px]', { 'group__data--input-readOnly': col.readOnly })}
-//                   onChange={(e) => {
-//                     handleOnChangeInputOrSelect(e, col);
-//                   }}
-//                 />
-//               ) : (
-//                 <input
-//                   value={col.value ?? ''}
-//                   name={col.name}
-//                   type={col.type}
-//                   // step={0.1}
-//                   required={col.required}
-//                   readOnly={col.readOnly}
-//                   defaultChecked={Boolean(col.value)}
-//                   placeholder={col.placeholder}
-//                   className={cx('group__data--input', { 'group__data--input-readOnly': col.readOnly })}
-//                   onChange={(e) => {
-//                     handleOnChangeInputOrSelect(e, col);
-//                   }}
-//                 />
-//               )}
-//             </div>
-//           ))}
-//           <div className="flex justify-center">
-//             <button
-//               type="submit"
-//               disabled={!isUnableBtn}
-//               className={cx('submit-btn', 'rounded-xl disabled:cursor-not-allowed disabled:bg-zinc-500')}
-//               onSubmit={(e) => {
-//                 // e.preventDefault();
-//               }}>
-//               Submit
-//             </button>
-//           </div>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
+  return (
+    <div
+      onClick={onCancel}
+      className={cx('wrapper')}
+      style={{
+        position: position || 'absolute',
+      }}>
+      <form
+        className={cx('wrapper__form', 'shadow-sm')}
+        style={{
+          minWidth: minWidth || 400,
+          maxWidth: maxWidth || 'auto',
+        }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const dataSend: any = {};
+          dataState.forEach((item, index) => {
+            if (item.canUpdate) {
+              if (item.type !== 'editor') dataSend[item.name] = item.value;
+              else dataSend[item.name] = dataSend[item.name] = editorContents[item.name];
+            }
+          });
+          if (id) {
+            onSubmit && onSubmit(id, dataSend, dispatch);
+          } else {
+            onSubmitCreate && onSubmitCreate(dataSend, dispatch);
+          }
+          onCancel();
+        }}>
+        <div className={cx('group__list')} onClick={(e) => e.stopPropagation()}>
+          <div className={cx('body__header')}>
+            <h1 className={cx('body__header--text', 'flex-1 ')}>{title || 'Cập nhật quá trình giao dịch'}</h1>
+            <FontAwesomeIcon className={cx('body__header--icon')} icon={faXmark} onClick={onCancel} />
+          </div>
+          {textWarning && <p className={cx('wrapper__warning', 'text-center text-red-500 mb-1 text-sm')}>{textWarning}</p>}
+          {dataState.map((col, index) => (
+            <div key={index} className={cx('group__data')}>
+              <label className={cx('group__data--label')}>{col.label}</label>
+              {col.type == 'options' ? (
+                <select
+                  required={col.required}
+                  className={cx('group__data--select', { 'group__data--input-readOnly': col.readOnly })}
+                  name={col.name}
+                  defaultValue={col.value}
+                  onChange={(e) => {
+                    handleOnChangeInputOrSelect(e, col);
+                  }}>
+                  {col.dataOption?.map((val, index) => (
+                    <option key={index} className={cx('group__data--option')} value={val.value}>
+                      {val.text}
+                    </option>
+                  ))}
+                </select>
+              ) : col.type == 'images' || col.type == 'image' ? (
+                <div className="">
+                  <input
+                    type="file"
+                    name={col.name}
+                    required={col.required}
+                    multiple={col.type === 'images'}
+                    onChange={async (e) => {
+                      if (e.target.files && handleUpLoadFiles) {
+                        const urlImage = await handleUpLoadFiles(e.target.files);
+                        if (urlImage.length) {
+                          handleChangeFile(urlImage, col);
+                        }
+                      }
+                    }}
+                  />
+                  <div className="mt-4 grid grid-cols-3 gap-3">
+                    {col.value
+                      .toString()
+                      .split('*_*')
+                      .map((img, index) => (
+                        <div key={index} className="w-full relative">
+                          <div
+                            className={cx('absolute top-2 right-2 rounded-full bg-white w-6 h-6 text-center shadow-lg cursor-pointer', {
+                              hidden: !img,
+                            })}
+                            onClick={() => handleChangeFile([img], col, true)}>
+                            <FontAwesomeIcon icon={faXmark} className=" text-base" />
+                          </div>
+                          <Image
+                            //
+                            key={index}
+                            alt="Image demo"
+                            src={String(img) || '/no-image.jpg'}
+                            width={350}
+                            height={250}
+                            className={cx('image__demo', 'rounded-2xl')}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : col.type == 'editor' ? (
+                <FroalaEditorComponent
+                  tag="textarea"
+                  config={{
+                    placeholderText: 'Edit Your Content Here!',
+                    charCounterCount: true,
+                    toolbarButtons: [
+                      //
+                      'bold',
+                      'italic',
+                      'underline',
+                      'strikeThrough',
+                      'subscript',
+                      'superscript',
+                      '|',
+                      'fontFamily',
+                      'fontSize',
+                      'color',
+                      'inlineStyle',
+                      'paragraphStyle',
+                      '|',
+                      'paragraphFormat',
+                      'align',
+                      'formatOL',
+                      'formatUL',
+                      'outdent',
+                      'indent',
+                      'quote',
+                      '-',
+                      'insertLink',
+                      'insertImage',
+                      // 'insertVideo',
+                      // 'insertFile',
+                      'insertTable',
+                      '|',
+                      'emoticons',
+                      'specialCharacters',
+                      'insertHR',
+                      'selectAll',
+                      'clearFormatting',
+                      '|',
+                      'print',
+                      'help',
+                      'html',
+                      '|',
+                      'undo',
+                      'redo',
+                    ],
+                    pluginsEnabled: ['align', 'charCounter', 'codeBeautifier', 'codeView', 'colors', 'draggable', 'emoticons', 'entities', 'file', 'fontFamily', 'fontSize', 'fullscreen', 'image', 'imageManager', 'inlineStyle', 'lineBreaker', 'link', 'lists', 'paragraphFormat', 'paragraphStyle', 'quickInsert', 'quote', 'save', 'table', 'url', 'video', 'wordPaste'],
+                    imageUpload: true,
+                    imageUploadMethod: 'POST',
+                    events: {
+                      'image.beforeUpload': function (files: File[]) {
+                        const editor = this as any;
+                        handleImageUpload(files, (url: string) => {
+                          editor.image.insert(url, true, null, editor.image.get(), null);
+                        });
+                        return false; // Stop default upload
+                      },
+                    },
+                  }}
+                  model={editorContents[col.name]}
+                  onModelChange={(model: any) => handleModelChange(col.name, model)}
+                />
+              ) : col.type == 'textarea' ? (
+                <textarea
+                  value={col.value ?? ''}
+                  name={col.name}
+                  required={col.required}
+                  readOnly={col.readOnly}
+                  placeholder={col.placeholder}
+                  className={cx('group__data--input', 'min-h-[140px]', { 'group__data--input-readOnly': col.readOnly })}
+                  onChange={(e) => {
+                    handleOnChangeInputOrSelect(e, col);
+                  }}
+                />
+              ) : (
+                <input
+                  value={col.value ?? ''}
+                  name={col.name}
+                  type={col.type}
+                  // step={0.1}
+                  required={col.required}
+                  readOnly={col.readOnly}
+                  defaultChecked={Boolean(col.value)}
+                  placeholder={col.placeholder}
+                  className={cx('group__data--input', { 'group__data--input-readOnly': col.readOnly })}
+                  onChange={(e) => {
+                    handleOnChangeInputOrSelect(e, col);
+                  }}
+                />
+              )}
+            </div>
+          ))}
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={!isUnableBtn}
+              className={cx('submit-btn', 'rounded-xl disabled:cursor-not-allowed disabled:bg-zinc-500')}
+              onSubmit={(e) => {
+                // e.preventDefault();
+              }}>
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+}

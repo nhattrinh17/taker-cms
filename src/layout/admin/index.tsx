@@ -2,8 +2,10 @@
 
 import { SideBarLayout } from '@/components/layout/SideBar';
 import { useAppDispatch, useAppSelector } from '@/lib';
+import { setDataUserLogin } from '@/lib/redux/app/userCurrent.slice';
 import { CreateHandleFlashMessage } from '@/uiCore/FlashMessage/HandleFlashMessage';
 import WrapperNotificationNetWork from '@/uiCore/WrapperNotificationNetWork';
+import { fetchUserInfo } from '@/utils/api';
 import { handleLogout } from '@/utils/handleLogin';
 import { faCaretDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,9 +25,16 @@ export function AdminLayout({
   const [openUserInfo, setOpenUserInfo] = useState(false);
 
   useEffect(() => {
-    if (!userId) {
-      router.replace('/');
+    async function fetchData() {
+      if (!userId) {
+        const userInfo = await fetchUserInfo();
+        if (userInfo) {
+          dispatch(setDataUserLogin(userInfo?.data));
+        }
+      }
     }
+
+    fetchData();
   }, []);
 
   const openOrCloseUserInfo = () => setOpenUserInfo((pre) => !pre);

@@ -2,13 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import settingAppReduce from './system/settingSys';
 import userCurrentReduce from './app/userCurrent.slice';
 import userReduce from './app/users.slice';
+import voucherReduce from './app/vouchers.slice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       settingApp: settingAppReduce,
       userCurrent: userCurrentReduce,
-      // users: userReduce,
+      voucher: voucherReduce,
     },
   });
 };
