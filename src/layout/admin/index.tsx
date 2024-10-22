@@ -1,6 +1,9 @@
 'use client';
 
+import { SideBarLayout } from '@/components/layout/SideBar';
 import { useAppDispatch, useAppSelector } from '@/lib';
+import { CreateHandleFlashMessage } from '@/uiCore/FlashMessage/HandleFlashMessage';
+import WrapperNotificationNetWork from '@/uiCore/WrapperNotificationNetWork';
 import { handleLogout } from '@/utils/handleLogin';
 import { faCaretDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +31,9 @@ export function AdminLayout({
   const openOrCloseUserInfo = () => setOpenUserInfo((pre) => !pre);
 
   return (
-    <>
+    <div className="h-screen overflow-hidden">
+      <WrapperNotificationNetWork />
+      <CreateHandleFlashMessage />
       <header className="h-14 py-3 bg-white border-b">
         <div className="container h-full flex justify-between">
           <Image alt="logo" src={'/image/logo_1.svg'} height={30} width={100} className="h-full object-contain py-1" />
@@ -54,7 +59,7 @@ export function AdminLayout({
 
         <div></div>
       </header>
-      <main className="container py-6">
+      <main className="h-[calc(100vh-56px)]">
         <div
           onClick={openOrCloseUserInfo}
           className={classNames('fixed top-0 left-0 right-0 bottom-0 bg-[var(--backgroundModal)] items-center justify-center', {
@@ -90,8 +95,15 @@ export function AdminLayout({
             </div>
           </div>
         </div>
-        {children}
+        <div className="bg-[var(--backgroundMain)] w-full h-full py-6">
+          <div className="container grid grid-cols-5 gap-4 h-full">
+            <div className="col-span-1">
+              <SideBarLayout />
+            </div>
+            <div className="col-span-4 rounded-xl bg-white">{children}</div>
+          </div>
+        </div>
       </main>
-    </>
+    </div>
   );
 }
