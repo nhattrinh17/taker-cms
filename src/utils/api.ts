@@ -24,3 +24,8 @@ export const createVoucher = (voucherData: any) => {
   const axios = new BaseAxios();
   return axios.post(apiPath.admin.voucher.create, voucherData);
 };
+
+export const updateVoucher = (id: string, voucherData: any) => {
+  const axios = new BaseAxios();
+  return axios.patch(`${apiPath.admin.voucher.update}/${id}`, voucherData);
+};

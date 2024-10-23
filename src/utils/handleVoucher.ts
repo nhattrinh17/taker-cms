@@ -3,7 +3,7 @@ import { resetDataVoucher, setDataVouchers } from '@/lib/redux/app/vouchers.slic
 import { setLoadingApp } from '@/lib/redux/system/settingSys';
 import moment from 'moment';
 import { useEffect } from 'react';
-import { createVoucher, getAllVoucher } from './api';
+import { createVoucher, getAllVoucher, updateVoucher } from './api';
 
 export const useVoucher = (limitCustom?: number) => {
   const { isFetchData, vouchers, page, limit, total, search } = useAppSelector((state) => state.voucher);
@@ -49,16 +49,18 @@ export const handleCreateVoucher = async (data: any, dispatch: any) => {
   const req = await createVoucher(data);
   if (req?.data) {
     dispatch(resetDataVoucher());
+    return true;
   } else {
     return false;
   }
 };
 
-// export const handleUpdateBlogCategory = async (id: number, data: any, dispatch: any) => {
-//   const req = await updateBlogCategory(id, data);
-//   if (req?.data) {
-//     dispatch(resetDataVoucher());
-//   } else {
-//     return false;
-//   }
-// };
+export const handleUpdateBlogCategory = async (id: string, data: any, dispatch: any) => {
+  const req = await updateVoucher(id, data);
+  if (req?.data) {
+    dispatch(resetDataVoucher());
+    return true;
+  } else {
+    return false;
+  }
+};

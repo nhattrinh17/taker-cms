@@ -8,7 +8,7 @@ interface PropsDto {
   }[];
   placeholder: string;
   onValueChange: (value: string) => void;
-  value: string;
+  value?: string;
   required?: boolean;
   label?: string;
   colorLabel: string;
@@ -24,7 +24,7 @@ export function MultipleOptionsBox({
   required,
   value,
 }: PropsDto): JSX.Element {
-  const [dataSelect, setDataSelect] = useState<string[]>([]);
+  const [dataSelect, setDataSelect] = useState<string[]>(data.filter((i) => value.includes(i.value)).map((i) => i.name));
   const [isOpenOption, setIsOpenOption] = useState(false);
 
   return (
@@ -50,7 +50,7 @@ export function MultipleOptionsBox({
 
       <div className="group relative">
         <div onClick={() => setIsOpenOption((pre) => !pre)} className="rounded-xl border py-1 px-2 cursor-pointer">
-          <span>{value ? dataSelect.join(', ') : placeholder} </span>
+          <span>{dataSelect.length ? dataSelect.join(', ') : placeholder} </span>
         </div>
 
         <div
@@ -64,6 +64,7 @@ export function MultipleOptionsBox({
                 <input
                   id={item.value}
                   type="checkbox"
+                  defaultChecked={value.includes(item.value)}
                   onChange={(e) => {
                     if (e.target.checked) {
                       setDataSelect((e) => [...e, item.name]);

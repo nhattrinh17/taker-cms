@@ -5,7 +5,7 @@ import { ButtonUiStyleOne } from '@/uiCore/ButtonStyle1';
 import { FormGroup2 } from '@/uiCore/FormGroup';
 import { MultipleOptionsBox } from '@/uiCore/MultipleOptionsBox';
 import { OptionSelectBox } from '@/uiCore/OptionSelectBox';
-import { handleCreateVoucher } from '@/utils/handleVoucher';
+import { handleCreateVoucher, handleUpdateBlogCategory } from '@/utils/handleVoucher';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
@@ -97,7 +97,7 @@ export function CreateOrUpdateVoucher({ onClose, voucherItemInit, idVoucher }: P
             </div>
 
             <ButtonUiStyleOne
-              onPress={() => {
+              onPress={async () => {
                 const data = {
                   name,
                   code,
@@ -111,7 +111,8 @@ export function CreateOrUpdateVoucher({ onClose, voucherItemInit, idVoucher }: P
                   typeDiscount,
                   isGlobal,
                 };
-                handleCreateVoucher(data, dispatch);
+                const res = idVoucher ? await handleUpdateBlogCategory(idVoucher, data, dispatch) : await handleCreateVoucher(data, dispatch);
+                res && onClose();
               }}
               disabled={!name || !code || !description || !paymentMethod || !discount || !discountToUp || !discountToUp || !minimumOrder || !quantity || !startTime || !typeDiscount}
               backgroundColor="var(--primaryColor)"
