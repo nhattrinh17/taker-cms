@@ -7,17 +7,40 @@ interface PropsOptionSelect {
     name: string;
     value: string;
   }[];
-  onFetch: (value: string) => Promise<void>;
+  onChange: (value: string) => Promise<void>;
   name: string;
+  label?: string;
+  colorLabel?: string;
+  required?: boolean;
 }
 
-export function OptionSelectBox({ data, onFetch, placeholder, name }: PropsOptionSelect): JSX.Element {
+export function OptionSelectBox({ data, onChange, placeholder, name, required, colorLabel, label }: PropsOptionSelect): JSX.Element {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full">
+      {label ? (
+        <label
+          className="text-sm flex items-center font-semibold mb-1"
+          style={{
+            color: colorLabel || '#575962',
+          }}>
+          <span>{label}</span>
+          <span
+            className={classNames(' ml-1 mt-1 text-red-600', {
+              block: required,
+              hidden: !required,
+            })}>
+            *
+          </span>
+        </label>
+      ) : (
+        <></>
+      )}
+
       <select
-        className={classNames('h-full cursor-pointer border outline-none rounded-lg px-2 py-2 w-fit flex items-center', {
+        onChange={(e) => onChange(e.target.value)}
+        className={classNames('h-full cursor-pointer border outline-none rounded-lg px-2 py-2 flex items-center w-full', {
           'border-[#22242626]': !isFocus,
           'border-[var(--primaryColor)]': isFocus,
         })}

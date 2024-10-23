@@ -23,7 +23,7 @@ export class BaseAxios {
       const response = await this.request.post(url, data, config);
       return response.data;
     } catch (error: any) {
-      const typeError: string = error?.response?.data?.exception?.message;
+      const typeError: string = error?.response?.data?.message;
       addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
       return false;
     }
@@ -34,7 +34,7 @@ export class BaseAxios {
       const response = await this.request.get(url, config);
       return response.data;
     } catch (error: any) {
-      const typeError: string = error?.response?.data?.exception?.message;
+      const typeError: string = error?.response?.data?.message;
       addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;
@@ -46,7 +46,7 @@ export class BaseAxios {
       const response = await this.request.patch(url, data, config);
       return response.data;
     } catch (error: any) {
-      const typeError: string = error?.response?.data?.exception?.message;
+      const typeError: string = error?.response?.data?.message;
       addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;
@@ -58,7 +58,7 @@ export class BaseAxios {
       const response = await this.request.delete(url, config);
       return response.data;
     } catch (error: any) {
-      const typeError: string = error?.response?.data?.exception?.message;
+      const typeError: string = error?.response?.data?.message;
       addFlashMessageFailed(messageResponse[typeError] || 'Có lỗi xảy ra vui lòng thử lại sau');
 
       return false;

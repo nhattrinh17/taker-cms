@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface VoucherItem {
+export interface VoucherItem {
   id: string;
   name: string;
   description: string;
@@ -12,9 +12,10 @@ interface VoucherItem {
   minimumOrder: number;
   totalUse: number;
   quantity: number;
-  startTime: number;
-  endTime: number;
+  startTime: string;
+  endTime: string;
   createdAt: string;
+  isGlobal: boolean;
 }
 
 interface VouchersSlice {
@@ -30,7 +31,7 @@ interface VouchersSlice {
 const vouchersSlice = createSlice({
   name: 'voucher',
   initialState: {
-    isFetchData: false,
+    isFetchData: true,
     vouchers: [],
     page: 1,
     limit: 10,
@@ -43,7 +44,7 @@ const vouchersSlice = createSlice({
       state.vouchers = action.payload?.data;
       state.total = action.payload?.total;
       state.page = action.payload.page;
-      state.isFetchData = true;
+      state.isFetchData = false;
     },
     setLimitOrPageVoucher: (state, action: { payload: { limit?: number; page?: number } }) => {
       state.limit = action.payload.limit ? action.payload.limit : state.limit;
@@ -54,7 +55,7 @@ const vouchersSlice = createSlice({
       state.page = 1;
       state.limit = 10;
       state.total = 0;
-      state.isFetchData = false;
+      state.isFetchData = true;
       state.search = '';
       state.phone = '';
     },
@@ -64,7 +65,7 @@ const vouchersSlice = createSlice({
       state.phone = action.payload.phone;
     },
     refreshDataVoucher: (state) => {
-      state.isFetchData = false;
+      state.isFetchData = true;
     },
   },
 });

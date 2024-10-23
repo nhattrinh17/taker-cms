@@ -11,6 +11,7 @@ export function SideBarLayout(): JSX.Element {
     <div className="w-full">
       {dataSideBar.map((item, index) => (
         <div
+          key={index}
           className={classNames('rounded-2xl text-sm', {
             'bg-[#ebfff2] font-semibold': pathname == item.path,
           })}>

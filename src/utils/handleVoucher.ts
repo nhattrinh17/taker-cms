@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from '@/lib';
-import { setDataVouchers } from '@/lib/redux/app/vouchers.slice';
+import { resetDataVoucher, setDataVouchers } from '@/lib/redux/app/vouchers.slice';
 import { setLoadingApp } from '@/lib/redux/system/settingSys';
 import moment from 'moment';
 import { useEffect } from 'react';
-import { getAllVoucher } from './api';
+import { createVoucher, getAllVoucher } from './api';
 
 export const useVoucher = (limitCustom?: number) => {
   const { isFetchData, vouchers, page, limit, total, search } = useAppSelector((state) => state.voucher);
@@ -32,6 +32,9 @@ export const useVoucher = (limitCustom?: number) => {
         return {
           ...i,
           createdAt: moment(i.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+          startTime: moment(i.startTime).format('YYYY-MM-DD HH:mm:ss'),
+          endTime: moment(i.endTime).format('YYYY-MM-DD HH:mm:ss'),
+          // isGlobal: i.isGlobal ? 'Áp dụng' : 'Không áp dụng',
         };
       }) || [],
     pagination: {
@@ -42,14 +45,14 @@ export const useVoucher = (limitCustom?: number) => {
   };
 };
 
-// export const handleCreateVoucher = async (data: any, dispatch: any) => {
-//   const req = await createVoucher(data);
-//   if (req?.data) {
-//     dispatch(resetDataVoucher());
-//   } else {
-//     return false;
-//   }
-// };
+export const handleCreateVoucher = async (data: any, dispatch: any) => {
+  const req = await createVoucher(data);
+  if (req?.data) {
+    dispatch(resetDataVoucher());
+  } else {
+    return false;
+  }
+};
 
 // export const handleUpdateBlogCategory = async (id: number, data: any, dispatch: any) => {
 //   const req = await updateBlogCategory(id, data);

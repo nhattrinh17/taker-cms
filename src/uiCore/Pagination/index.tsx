@@ -19,13 +19,13 @@ function getNumberPageDisplay(page: number, countPage: number) {
 }
 
 function Pagination(params: {
-  count: number; //Tổng số phần tử
+  total: number; //Tổng số phần tử
   limit: number; //Số phần tử 1 trang
   page: number;
   setPage: (page: number) => void;
 }) {
-  const { count, limit, page, setPage } = params;
-  const countPage = Math.ceil(count / limit) ? Math.ceil(count / limit) : 1;
+  const { total, limit, page, setPage } = params;
+  const countPage = Math.ceil(total / limit) ? Math.ceil(total / limit) : 1;
   const arrPage = getNumberPageDisplay(page, countPage);
 
   return (

@@ -105,11 +105,11 @@ export function AdminLayout({
           </div>
         </div>
         <div className="bg-[var(--backgroundMain)] w-full h-full py-6">
-          <div className="container grid grid-cols-5 gap-4 h-full">
+          <div className="container grid grid-cols-7 gap-4 h-full">
             <div className="col-span-1">
               <SideBarLayout />
             </div>
-            <div className="col-span-4 rounded-xl bg-white">{children}</div>
+            <div className="col-span-6 rounded-xl bg-white overflow-hidden">{children}</div>
           </div>
         </div>
       </main>
