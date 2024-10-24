@@ -77,11 +77,23 @@ function Table(props: {
               ))}
               {moreColumnsOptions?.map((item, index) => (
                 <th key={index} className={cx('thead__column')}>
-                  {item.name}
+                  <p className="w-max text-center block px-1">{item.name}</p>
                 </th>
               ))}
-              {columnEdit ? <th className={cx('thead__column')}>Update</th> : <></>}
-              {columnDelete ? <th className={cx('thead__column')}>Delete</th> : <></>}
+              {columnEdit ? (
+                <th className={cx('thead__column')}>
+                  <p className="w-max text-center block px-1">Cập nhật</p>
+                </th>
+              ) : (
+                <></>
+              )}
+              {columnDelete ? (
+                <th className={cx('thead__column')}>
+                  <p className="w-max text-center block px-1">Xóa</p>
+                </th>
+              ) : (
+                <></>
+              )}
               {columnRestore ? <th className={cx('thead__column')}>Khôi phục</th> : <></>}
             </tr>
           </thead>

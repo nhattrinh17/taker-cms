@@ -40,6 +40,7 @@ export function FormGroup2({ label, onBlur, placeholder, step, onChange, minValu
           <input
             step={step}
             min={minValue}
+            defaultChecked={Boolean(value)}
             type={typeInput}
             placeholder={placeholder}
             className={cx('fromGroup__body--input')}

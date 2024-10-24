@@ -8,6 +8,7 @@ export const apiPath = {
       getAll: '/v1/admins/vouchers',
       create: '/v1/admins/vouchers',
       update: '/v1/admins/vouchers',
+      customerVoucher: '/v1/admins/vouchers',
     },
   },
 };

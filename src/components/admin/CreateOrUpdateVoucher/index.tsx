@@ -28,7 +28,7 @@ export function CreateOrUpdateVoucher({ onClose, voucherItemInit, idVoucher }: P
   const [startTime, setStartTime] = useState(voucherItemInit?.startTime);
   const [endTime, setEndTime] = useState(voucherItemInit?.endTime);
   const [typeDiscount, setTypeDiscount] = useState(voucherItemInit?.typeDiscount);
-  const [isGlobal, setIsGlobal] = useState(voucherItemInit?.typeDiscount || false);
+  const [isGlobal, setIsGlobal] = useState(voucherItemInit?.isGlobal || false);
   const dispatch = useAppDispatch();
   return (
     <div onClick={onClose} className="z-10 fixed top-0 left-0 right-0 bottom-0 h-screen overflow-y-auto bg-[var(--backgroundModal)]">

@@ -3,7 +3,7 @@
   background-color: #fff;
   position: relative;
   overflow-y: auto; // Bật thanh cuộn tổng thể nếu cần
-  overflow-x: scroll;
+  overflow-x: auto;
   max-height: 80vh; // Giới hạn chiều cao của bảng nếu cần
 
   &::-webkit-scrollbar {
@@ -31,6 +31,7 @@
 
 .table__custom {
   padding: 10px !important;
+  min-width: 100%;
   overflow-y: scroll; // Bật thanh cuộn tổng thể nếu cần
   overflow-x: scroll;
 

@@ -1,8 +1,6 @@
 /* styles.module.scss */
 // styles.module.scss
 .paginationControl {
-  display: flex;
-  align-items: center;
   color: #000;
 
   &Label {
@@ -52,10 +50,6 @@
 }
 
 /* styles.module.scss */
-.paginationControl {
-  display: flex;
-  align-items: center;
-}
 
 .paginationControlLabel {
   margin-right: 10px;

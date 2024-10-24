@@ -10,6 +10,8 @@ import Pagination from '@/uiCore/Pagination';
 import { SearchBox } from '@/uiCore/SearchBox';
 import Table from '@/uiCore/Table';
 import { useVoucher } from '@/utils/handleVoucher';
+import { faTicket } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export function VoucherAdminSection(): JSX.Element {
@@ -18,6 +20,7 @@ export function VoucherAdminSection(): JSX.Element {
   const [isCreating, setIsCreating] = useState(false);
   const [idVoucher, setIdVoucher] = useState('');
   const voucherById = data.find((i) => i.id == idVoucher);
+  const router = useRouter();
 
   useEffect(() => {
     return () => {
@@ -89,12 +92,21 @@ export function VoucherAdminSection(): JSX.Element {
               createdAt: 'Thời gian tạo',
             }}
             handleEdit={(id) => setIdVoucher(id)}
+            moreColumnsOptions={[
+              {
+                icon: faTicket,
+                name: 'Khách hàng',
+                handleClick(item) {
+                  router.replace(`/admin/voucher/${item?.id}`);
+                },
+              },
+            ]}
           />
         </div>
 
         <div className="pt-5 relative">
           <div className="absolute left-0 bottom-1/2 translate-y-1/2">
-            <PaginationControl limit={pagination.limit} setLimit={(limit) => {}} />
+            <PaginationControl {...pagination} setLimit={(limit) => {}} />
           </div>
           <Pagination {...pagination} setPage={(page) => {}} />
         </div>

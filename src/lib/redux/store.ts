@@ -3,6 +3,7 @@ import settingAppReduce from './system/settingSys';
 import userCurrentReduce from './app/userCurrent.slice';
 import userReduce from './app/users.slice';
 import voucherReduce from './app/vouchers.slice';
+import customerVoucherReduce from './app/customerVoucher.slice';
 
 export const makeStore = () => {
   return configureStore({
@@ -10,6 +11,7 @@ export const makeStore = () => {
       settingApp: settingAppReduce,
       userCurrent: userCurrentReduce,
       voucher: voucherReduce,
+      customerVoucher: customerVoucherReduce,
     },
   });
 };
